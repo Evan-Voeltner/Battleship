@@ -2,7 +2,8 @@ from game_piece import GamePiece
 
 class Board():
     def __init__(self):
-        self.current_board = self.create_board()
+        self.player_board = self.create_board()
+        self.opponent_board = self.create_board()
         self.pieces = [GamePiece('Destroyer', 2), GamePiece('Submarine', 3), GamePiece('Battleship', 4), GamePiece('Aircraft Carrier', 5)]
         
 
@@ -16,14 +17,19 @@ class Board():
             new_board.append(new_row)
         return new_board
 
-    def print_board(self):
-        for row in self.current_board:
+    def print_player_board(self):
+        for row in self.player_board:
+            print(row)
+
+    def print_opponent_board(self):
+        for row in self.opponent_board:
             print(row)
 
     def place_pieces(self):
         pieces_to_place = self.pieces.copy()
         for piece in pieces_to_place:
-            self.print_board()
+            self.print_player_board()
+            print(f'{piece.name} | {str(piece.size)}')
             player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
             positions_list = player_input.split()
             start_position = positions_list[0]
@@ -33,7 +39,7 @@ class Board():
                 total_spaces = abs(int(start_position[1]) - int(end_position[1])) + 1
                 if total_spaces == piece.size:
                     row_position = start_position[0]
-                    column_position = start_position[1]
+                    column_position = int(start_position[1])
                     for _ in range(total_spaces):
                         unchecked_position = (f'{row_position}{str(column_position)}')
                         if self.find_if_duplicate(unchecked_position):
@@ -61,12 +67,21 @@ class Board():
             else:
                 print('Input not valid')
 
+            for position in piece.positions:
+                self.redraw_player_board(position)
+
     def find_if_duplicate(self, position_to_check):
         for piece in self.pieces:
             for position in piece.positions:
                 if position == position_to_check:
                     return True        
 
+    def redraw_player_board(self, board_position_to_redraw):
+        for row in self.player_board:
+            for position in row:
+                if position == board_position_to_redraw:
+                    row[row.index(position)] = '()'
+
 my_board = Board()
 
-my_board.print_board()
+my_board.place_pieces()

@@ -3,5 +3,5 @@ class GamePiece():
         self.name = name
         self.size = size
         self.positions = []
-        self.appearance = 'OO'
+        self.appearance = '00'
         self.destroyed = False
