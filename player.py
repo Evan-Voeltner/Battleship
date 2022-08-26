@@ -2,4 +2,6 @@ from board import Board
 
 class Player:
     def __init__(self):
-        pass
+        self.board = Board()
+        self.hits = 0
+        self.misses = 0
