@@ -51,12 +51,12 @@ class Board():
                             column_position += 1
 
             elif start_position[1:] == end_position[1:]:
-                total_spaces = abs((ord(start_position[0]) - 96) - (ord(end_position[0])) - 96) + 1
+                total_spaces = abs((ord(start_position[0].lower()) - 96) - (ord(end_position[0].lower())- 96) ) + 1
                 if total_spaces == piece.size:
-                    row_position = ord(start_position[0]) + 96
-                    column_position = start_position[1:]
+                    row_position = ord(start_position[0]) - 64
+                    column_position = start_position[1:] 
                     for _ in range(total_spaces):
-                        unchecked_position = (f'{chr(row_position).capitalize()}{str(column_position)}')
+                        unchecked_position = (f'{chr(row_position + 96).capitalize()}{str(column_position)}')
                         if self.find_if_duplicate(unchecked_position):
                             print('One of these spaces are ocuppied!')
                             piece.positions = []
