@@ -24,7 +24,7 @@ class Board():
         pieces_to_place = self.pieces.copy()
         for piece in pieces_to_place:
             self.print_board()
-            player_input = input('Where is the starting position and ending postion of the piece? Please type with a space (A1 A2)')
+            player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
             positions_list = player_input.split()
             start_position = positions_list[0]
             end_position = positions_list[1]
@@ -35,9 +35,37 @@ class Board():
                     row_position = start_position[0]
                     column_position = start_position[1]
                     for _ in range(total_spaces):
-                        piece.positions.append(f'{row_position}{str(column_position)}')
-                        column_position += 1
-            
+                        unchecked_position = (f'{row_position}{str(column_position)}')
+                        if self.find_if_duplicate(unchecked_position):
+                            print('One of these spaces are ocuppied!')
+                            piece.positions = []
+                            break
+                        else:
+                            piece.positions.append(unchecked_position)
+                            column_position += 1
+
+            elif start_position[1] == end_position[1]:
+                total_spaces = abs((ord(start_position[0]) - 96) - (ord(end_position[0])) - 96) + 1
+                if total_spaces == piece.size:
+                    row_position = ord(start_position[0]) + 96
+                    column_position = start_position[1]
+                    for _ in range(total_spaces):
+                        unchecked_position = (f'{chr(row_position).capitalize()}{str(column_position)}')
+                        if self.find_if_duplicate(unchecked_position):
+                            print('One of these spaces are ocuppied!')
+                            piece.positions = []
+                            break
+                        else:
+                            piece.positions.append(unchecked_position)
+                            row_position += 1
+            else:
+                print('Input not valid')
+
+    def find_if_duplicate(self, position_to_check):
+        for piece in self.pieces:
+            for position in piece.positions:
+                if position == position_to_check:
+                    return True        
 
 my_board = Board()
 
