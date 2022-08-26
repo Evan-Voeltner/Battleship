@@ -28,47 +28,57 @@ class Board():
     def place_pieces(self):
         pieces_to_place = self.pieces.copy()
         for piece in pieces_to_place:
-            self.print_player_board()
-            print(f'{piece.name} | {str(piece.size)}')
-            player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
-            positions_list = player_input.split()
-            start_position = positions_list[0]
-            end_position = positions_list[1]
+            piece_not_placed = True
+            while piece_not_placed == True:
+                piece_not_placed = False
+                
+                self.print_player_board()
+                print(f'{piece.name} | {str(piece.size)}')
+                player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
+                positions_list = player_input.split()
+                start_position = positions_list[0]
+                end_position = positions_list[1]
 
-            if start_position[0] == end_position[0]:
-                total_spaces = abs(int(start_position[1:]) - int(end_position[1:])) + 1
-                if total_spaces == piece.size:
-                    row_position = start_position[0]
-                    column_position = int(start_position[1:])
-                    for _ in range(total_spaces):
-                        unchecked_position = (f'{row_position}{str(column_position)}')
-                        if self.find_if_duplicate(unchecked_position):
-                            print('One of these spaces are ocuppied!')
-                            piece.positions = []
-                            break
-                        else:
-                            piece.positions.append(unchecked_position)
-                            column_position += 1
+                if start_position[0] == end_position[0]:
+                    total_spaces = abs(int(start_position[1:]) - int(end_position[1:])) + 1
+                    if total_spaces == piece.size:
+                        row_position = start_position[0]
+                        column_position = int(start_position[1:])
+                        for _ in range(total_spaces):
+                            unchecked_position = (f'{row_position}{str(column_position)}')
+                            if self.find_if_duplicate(unchecked_position):
+                                print('One of these spaces are ocuppied!')
+                                piece.positions = []
+                                piece_not_placed = True
+                                break
+                            else:
+                                piece.positions.append(unchecked_position)
+                                column_position += 1
+                        
+                elif start_position[1:] == end_position[1:]:
+                    total_spaces = abs((ord(start_position[0].lower()) - 96) - (ord(end_position[0].lower())- 96) ) + 1
+                    if total_spaces == piece.size:
+                        row_position = ord(start_position[0]) - 64
+                        column_position = start_position[1:] 
+                        for _ in range(total_spaces):
+                            unchecked_position = (f'{chr(row_position + 96).capitalize()}{str(column_position)}')
+                            if self.find_if_duplicate(unchecked_position):
+                                print('One of these spaces are ocuppied!')
+                                piece.positions = []
+                                piece_not_placed = True
+                                break
+                            else:
+                                piece.positions.append(unchecked_position)
+                                row_position += 1
+                           
+                else:
+                    print('Input not valid')
 
-            elif start_position[1:] == end_position[1:]:
-                total_spaces = abs((ord(start_position[0].lower()) - 96) - (ord(end_position[0].lower())- 96) ) + 1
-                if total_spaces == piece.size:
-                    row_position = ord(start_position[0]) - 64
-                    column_position = start_position[1:] 
-                    for _ in range(total_spaces):
-                        unchecked_position = (f'{chr(row_position + 96).capitalize()}{str(column_position)}')
-                        if self.find_if_duplicate(unchecked_position):
-                            print('One of these spaces are ocuppied!')
-                            piece.positions = []
-                            break
-                        else:
-                            piece.positions.append(unchecked_position)
-                            row_position += 1
-            else:
-                print('Input not valid')
-
-            for position in piece.positions:
-                self.redraw_player_board(position)
+                for position in piece.positions:
+                    self.redraw_player_board(position)
+                
+                
+            
 
     def find_if_duplicate(self, position_to_check):
         for piece in self.pieces:
