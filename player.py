@@ -1,7 +1,8 @@
 from board import Board
 
 class Player:
-    def __init__(self):
+    def __init__(self, player_num):
+        self.player_number = player_num
         self.board = Board()
         self.hits = 0
         self.misses = 0
