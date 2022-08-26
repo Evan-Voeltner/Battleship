@@ -36,10 +36,10 @@ class Board():
             end_position = positions_list[1]
 
             if start_position[0] == end_position[0]:
-                total_spaces = abs(int(start_position[1]) - int(end_position[1])) + 1
+                total_spaces = abs(int(start_position[1:]) - int(end_position[1:])) + 1
                 if total_spaces == piece.size:
                     row_position = start_position[0]
-                    column_position = int(start_position[1])
+                    column_position = int(start_position[1:])
                     for _ in range(total_spaces):
                         unchecked_position = (f'{row_position}{str(column_position)}')
                         if self.find_if_duplicate(unchecked_position):
@@ -50,11 +50,11 @@ class Board():
                             piece.positions.append(unchecked_position)
                             column_position += 1
 
-            elif start_position[1] == end_position[1]:
+            elif start_position[1:] == end_position[1:]:
                 total_spaces = abs((ord(start_position[0]) - 96) - (ord(end_position[0])) - 96) + 1
                 if total_spaces == piece.size:
                     row_position = ord(start_position[0]) + 96
-                    column_position = start_position[1]
+                    column_position = start_position[1:]
                     for _ in range(total_spaces):
                         unchecked_position = (f'{chr(row_position).capitalize()}{str(column_position)}')
                         if self.find_if_duplicate(unchecked_position):
