@@ -1,3 +1,4 @@
+from turtle import position
 from game_piece import GamePiece
 
 class Board():
@@ -31,6 +32,31 @@ class Board():
         for row in self.opponent_board:
             print(row)
 
+    def get_all_possible_positions(self):
+        all_positions = []
+        for row in self.create_board():
+            for item in row:
+                all_positions.append(item)
+        return all_positions
+
+    def verify_piece_placement_input(self):
+        user_input = input('Type Here: ').upper()
+        if len(user_input) != 2:
+            print('That is not a valid position, type another.')
+            user_input = self.verify_piece_placement_input()
+        if user_input not in self.get_all_possible_positions():
+            print('That is not a valid position, type another.')
+            user_input = self.verify_piece_placement_input()
+        return user_input
+
+    def get_list_of_positions(self):
+        print('What is the starting position?')
+        starting_position = self.verify_piece_placement_input()
+        print('What is the ending position?')
+        ending_position = self.verify_piece_placement_input()
+        return [starting_position, ending_position]
+
+
     def place_pieces(self):
         pieces_to_place = self.pieces.copy()
         for piece in pieces_to_place:
@@ -40,8 +66,9 @@ class Board():
                 
                 self.print_player_board()
                 print(f'{piece.name} | {str(piece.size)}')
-                player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
-                positions_list = player_input.split()
+                # player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
+                # positions_list = player_input.split()
+                positions_list = self.get_list_of_positions()
                 start_position = positions_list[0]
                 end_position = positions_list[1]
 
