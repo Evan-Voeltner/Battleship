@@ -19,7 +19,13 @@ class Board():
 
     def print_player_board(self):
         for row in self.player_board:
-            print(row)
+            row_string = ''
+            for item in row:
+                if item[1:] == '10':
+                    row_string += f'|{item}|'
+                else:
+                    row_string += f'|{item}'
+            print(row_string)
 
     def print_opponent_board(self):
         for row in self.opponent_board:
