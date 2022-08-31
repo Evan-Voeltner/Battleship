@@ -18,7 +18,7 @@ class Board():
             new_board.append(new_row)
         return new_board
 
-    def print_player_board(self):
+    def print_board(self):
         for row in self.player_board:
             row_string = ''
             for item in row:
@@ -28,10 +28,6 @@ class Board():
                     row_string += f'|{item}'
             print(row_string)
 
-    def print_opponent_board(self):
-        for row in self.opponent_board:
-            print(row)
-
     def get_all_possible_positions(self):
         all_positions = []
         for row in self.create_board():
@@ -39,22 +35,28 @@ class Board():
                 all_positions.append(item)
         return all_positions
 
-    def verify_piece_placement_input(self):
+    def verify_position_input(self):
         user_input = input('Type Here: ').upper()
-        if len(user_input) != 2:
-            print('That is not a valid position, type another.')
-            user_input = self.verify_piece_placement_input()
+        # if len(user_input) != 2:
+        #     print('That is not a valid position, type another.')
+        #     user_input = self.verify_piece_placement_input()
         if user_input not in self.get_all_possible_positions():
             print('That is not a valid position, type another.')
-            user_input = self.verify_piece_placement_input()
+            user_input = self.verify_position_input()
         return user_input
 
     def get_list_of_positions(self):
         print('What is the starting position?')
-        starting_position = self.verify_piece_placement_input()
+        starting_position = self.verify_position_input()
         print('What is the ending position?')
-        ending_position = self.verify_piece_placement_input()
-        return [starting_position, ending_position]
+        ending_position = self.verify_position_input()
+        positions_list = []
+        if starting_position[0] == ending_position[0] or starting_position[1:] == ending_position[1:]:
+            positions_list = [starting_position, ending_position]
+        else:
+            print("Those positions don't line up, please find different ones.")
+            positions_list = self.get_list_of_positions()
+        return positions_list
 
 
     def place_pieces(self):
@@ -64,10 +66,8 @@ class Board():
             while piece_not_placed == True:
                 piece_not_placed = False
                 
-                self.print_player_board()
+                self.print_board()
                 print(f'{piece.name} | {str(piece.size)}')
-                # player_input = input('Where is the starting and ending postion of the piece? Please type with a space (A1 A2): ')
-                # positions_list = player_input.split()
                 positions_list = self.get_list_of_positions()
                 start_position = positions_list[0]
                 end_position = positions_list[1]
@@ -108,23 +108,19 @@ class Board():
                     print('Input not valid')
 
                 for position in piece.positions:
-                    self.redraw_player_board(position)
-                
-                
-            
+                    self.draw_game_piece(position)
 
+        self.print_board()
+                
+                
     def find_if_duplicate(self, position_to_check):
         for piece in self.pieces:
             for position in piece.positions:
                 if position == position_to_check:
                     return True        
 
-    def redraw_player_board(self, board_position_to_redraw):
+    def draw_game_piece(self, board_position_to_redraw):
         for row in self.player_board:
             for position in row:
                 if position == board_position_to_redraw:
                     row[row.index(position)] = '()'
-
-my_board = Board()
-
-my_board.place_pieces()
