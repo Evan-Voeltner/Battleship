@@ -3,8 +3,7 @@ from game_piece import GamePiece
 
 class Board():
     def __init__(self):
-        self.player_board = self.create_board()
-        self.opponent_board = self.create_board()
+        self.current_board = self.create_board()
         self.pieces = [GamePiece('Destroyer', 2), GamePiece('Submarine', 3), GamePiece('Battleship', 4), GamePiece('Aircraft Carrier', 5)]
         
 
@@ -19,7 +18,7 @@ class Board():
         return new_board
 
     def print_board(self):
-        for row in self.player_board:
+        for row in self.current_board:
             row_string = ''
             for item in row:
                 if item[1:] == '10':
@@ -120,7 +119,7 @@ class Board():
                     return True        
 
     def draw_game_piece(self, board_position_to_redraw):
-        for row in self.player_board:
+        for row in self.current_board:
             for position in row:
                 if position == board_position_to_redraw:
                     row[row.index(position)] = '()'

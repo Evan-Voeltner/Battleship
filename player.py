@@ -7,3 +7,7 @@ class Player:
         self.opponent_board = Board()
         self.hits = 0
         self.misses = 0
+
+
+    def make_guess(self, opponent):
+        pass
